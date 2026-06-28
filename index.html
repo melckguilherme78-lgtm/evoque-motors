@@ -23,8 +23,10 @@
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 0 20px 40px; max-width: 1200px; margin: 0 auto; }
   .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; }
   .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.13); }
-  .card-media-foto { width: 100%; height: 220px; object-fit: cover; display: block; }
-  .card-media-video { width: 100%; height: 340px; object-fit: contain; display: block; background: #000; }
+  .card-foto { width: 100%; height: 220px; object-fit: cover; display: block; }
+  .card-video { width: 100%; height: 340px; object-fit: contain; display: block; background: #000; }
+  .videos-duplo { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #000; }
+  .videos-duplo video { width: 100%; height: 220px; object-fit: contain; background: #000; display: block; }
   .card-body { padding: 16px; }
   .card-titulo { font-size: 16px; font-weight: 800; line-height: 1.3; }
   .card-detalhes { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
@@ -81,7 +83,7 @@
 <script>
 const W = "5527992318461";
 const carros = [
-  { t: "Mercedes-Benz Sprinter 415 Van Luxo 2014", km: "Consultar",   cor: "Branca", p: "R$ 135.900", tags: ["Diesel","Van Executiva","2014"],    videos: ["fotos/sprinter_video1.mp4","fotos/sprinter_video_interno.mp4"], img: "fotos/sprinter.jpg",  olx: "https://www.olx.com.br/vi/1495113219" },
+  { t: "Mercedes-Benz Sprinter 415 Van Luxo 2014", km: "Consultar",   cor: "Branca", p: "R$ 135.900", tags: ["Diesel","Van Executiva","2014"],    video: "fotos/sprinter_video1.mp4", video2: "fotos/sprinter_video_interno.mp4", img: "fotos/sprinter.jpg",  olx: "https://www.olx.com.br/vi/1495113219" },
   { t: "Toyota Hilux CD 4x4 2.5 Diesel 2006",      km: "292.000 km", cor: "Prata",  p: "R$ 74.900",  tags: ["Diesel","4x4","Cabine Dupla"],      video: "fotos/hilux_video.mp4",    img: "fotos/hilux.jpg",    olx: "https://www.olx.com.br/vi/1496291401" },
   { t: "Ford KA SE 1.0 Flex 2018",                  km: "44.000 km",  cor: "Branco", p: "R$ 39.900",  tags: ["Flex","Sedan","Baixo KM"],          img: "fotos/ka.jpg",               olx: "https://www.olx.com.br/vi/1507419418" },
   { t: "Fiat Strada Adventure 1.8 CE 2010",         km: "Consultar",  cor: "Cinza",  p: "R$ 52.900",  tags: ["Flex","Cabine Estendida","4x4"],    img: "fotos/strada.jpg",           olx: "https://www.olx.com.br/vi/1442636062" },
@@ -94,17 +96,14 @@ const grid = document.getElementById('estoque');
 carros.forEach(c => {
   const msg = encodeURIComponent("Olá! Vi o site da Evoque Motors e tenho interesse no " + c.t + ". Poderia me passar mais informações?");
   let media;
-  if (c.videos) {
-    const vids = c.videos.map(v=>`<source src="${v}" type="video/mp4">`).join("");
-    media = `<video class="card-media-video" id="vid_${Math.random().toString(36).slice(2)}" autoplay muted playsinline poster="${c.img}" onended="this.src=this.src">${vids}</video>`;
-    // alterna entre os videos ao terminar
-    media = `<video class="card-media-video" autoplay muted playsinline poster="${c.img}" data-videos="${c.videos.join("|")}" data-idx="0" onended="var v=this,vs=v.dataset.videos.split(\"|\"),i=(+v.dataset.idx+1)%vs.length;v.dataset.idx=i;v.src=vs[i];v.play()"><source src="${c.videos[0]}" type="video/mp4"></video>`;
+  if (c.video && c.video2) {
+    media = `<div class="videos-duplo"><video autoplay muted loop playsinline><source src="${c.video}" type="video/mp4"></video><video autoplay muted loop playsinline><source src="${c.video2}" type="video/mp4"></video></div>`;
   } else if (c.video) {
-    media = `<video class="card-media-video" autoplay muted loop playsinline poster="${c.img}"><source src="${c.video}" type="video/mp4"></video>`;
+    media = `<video class="card-video" autoplay muted loop playsinline poster="${c.img}"><source src="${c.video}" type="video/mp4"></video>`;
   } else if (c.olx) {
-    media = `<a href="${c.olx}" target="_blank"><img class="card-media-foto" src="${c.img}" alt="${c.t}" loading="lazy"></a>`;
+    media = `<a href="${c.olx}" target="_blank"><img class="card-foto" src="${c.img}" alt="${c.t}" loading="lazy"></a>`;
   } else {
-    media = `<img class="card-media-foto" src="${c.img}" alt="${c.t}" loading="lazy">`;
+    media = `<img class="card-foto" src="${c.img}" alt="${c.t}" loading="lazy">`;
   }
   grid.innerHTML += `<div class="card">${media}<div class="card-body"><div class="card-titulo">${c.t}</div><div class="card-detalhes">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}<span class="tag">🎨 ${c.cor}</span><span class="tag">📍 ${c.km}</span></div><div class="card-preco">${c.p} <small>· Financiamos</small></div><a class="btn-wpp" href="https://wa.me/${W}?text=${msg}" target="_blank">💬 Tenho interesse</a></div></div>`;
 });
