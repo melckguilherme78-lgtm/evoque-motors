@@ -80,18 +80,22 @@
 <script>
 const W = "5527992318461";
 const carros = [
-  { t: "Mercedes-Benz Sprinter 415 Van Luxo 2014", km: "Consultar",   cor: "Branca",    p: "R$ 135.900", tags: ["Diesel","Van Executiva","2014"],     img: "fotos/sprinter.jpg",  olx: "https://www.olx.com.br/vi/1495113219" },
-  { t: "Toyota Hilux CD 4x4 2.5 Diesel 2006",      km: "292.000 km", cor: "Prata",     p: "R$ 74.900",  tags: ["Diesel","4x4","Cabine Dupla"],       img: "fotos/hilux.jpg",    olx: "https://www.olx.com.br/vi/1496291401" },
-  { t: "Ford KA SE 1.0 Flex 2018",                  km: "44.000 km",  cor: "Branco",   p: "R$ 39.900",  tags: ["Flex","Sedan","Baixo KM"],           img: "fotos/ka.jpg",       olx: "https://www.olx.com.br/vi/1507419418" },
-  { t: "Fiat Strada Adventure 1.8 CE 2010",         km: "Consultar",  cor: "Cinza",    p: "R$ 52.900",  tags: ["Flex","Cabine Estendida","4x4"],     img: "fotos/strada.jpg",   olx: "https://www.olx.com.br/vi/1442636062" },
-  { t: "VW Gol 1000 1994",                          km: "Consultar",  cor: "Azul",     p: "R$ 22.900",  tags: ["1.0","Econômico","Clássico"],        img: "fotos/gol.jpg",      olx: "https://www.olx.com.br/vi/1429627037" },
-  { t: "Subaru Legacy GT 2.5 280cv Aut. 2011",      km: "Consultar",  cor: "Preto",    p: "R$ 85.900",  tags: ["AWD","Turbo","Automático"],          img: "fotos/subaru.jpg",   olx: "https://www.olx.com.br/vi/1452937267" },
-  { t: "Land Rover Defender 90 2.4 Diesel 2007",    km: "Consultar",  cor: "Prata",    p: "R$ 349.000", tags: ["Diesel","4x4","Off-Road"],           img: "fotos/defender2.jpg",olx: "https://www.olx.com.br/vi/1505288142" }
+  { t: "Mercedes-Benz Sprinter 415 Van Luxo 2014", km: "Consultar",   cor: "Branca", p: "R$ 135.900", tags: ["Diesel","Van Executiva","2014"],    img: "fotos/sprinter.jpg",  olx: "https://www.olx.com.br/vi/1495113219" },
+  { t: "Toyota Hilux CD 4x4 2.5 Diesel 2006",      km: "292.000 km", cor: "Prata",  p: "R$ 74.900",  tags: ["Diesel","4x4","Cabine Dupla"],      img: "fotos/hilux.jpg",    olx: "https://www.olx.com.br/vi/1496291401" },
+  { t: "Ford KA SE 1.0 Flex 2018",                  km: "44.000 km",  cor: "Branco", p: "R$ 39.900",  tags: ["Flex","Sedan","Baixo KM"],          img: "fotos/ka.jpg",       olx: "https://www.olx.com.br/vi/1507419418" },
+  { t: "Fiat Strada Adventure 1.8 CE 2010",         km: "Consultar",  cor: "Cinza",  p: "R$ 52.900",  tags: ["Flex","Cabine Estendida","4x4"],    img: "fotos/strada.jpg",   olx: "https://www.olx.com.br/vi/1442636062" },
+  { t: "VW Gol 1000 1994",                          km: "Consultar",  cor: "Azul",   p: "R$ 22.900",  tags: ["1.0","Econômico","Clássico"],       img: "fotos/gol.jpg",      olx: "https://www.olx.com.br/vi/1429627037" },
+  { t: "VW Gol 1.8 AP 1991",                        km: "Consultar",  cor: "Cinza",  p: "R$ 28.000",  tags: ["1.8 AP","Clássico","Impecável"],    img: "fotos/gol1991.jpg",  olx: "" },
+  { t: "Subaru Legacy GT 2.5 280cv Aut. 2011",      km: "Consultar",  cor: "Preto",  p: "R$ 85.900",  tags: ["AWD","Turbo","Automático"],         img: "fotos/subaru.jpg",   olx: "https://www.olx.com.br/vi/1452937267" },
+  { t: "Land Rover Defender 90 2.4 Diesel 2007",    km: "Consultar",  cor: "Prata",  p: "R$ 349.000", tags: ["Diesel","4x4","Off-Road"],          img: "fotos/defender2.jpg",olx: "https://www.olx.com.br/vi/1505288142" }
 ];
 const grid = document.getElementById('estoque');
 carros.forEach(c => {
   const msg = encodeURIComponent("Olá! Vi o site da Evoque Motors e tenho interesse no " + c.t + ". Poderia me passar mais informações?");
-  grid.innerHTML += `<div class="card"><a href="${c.olx}" target="_blank"><img src="${c.img}" alt="${c.t}" loading="lazy"></a><div class="card-body"><div class="card-titulo">${c.t}</div><div class="card-detalhes">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}<span class="tag">🎨 ${c.cor}</span><span class="tag">📍 ${c.km}</span></div><div class="card-preco">${c.p} <small>· Financiamos</small></div><a class="btn-wpp" href="https://wa.me/${W}?text=${msg}" target="_blank">💬 Tenho interesse</a></div></div>`;
+  const imgHtml = c.olx
+    ? `<a href="${c.olx}" target="_blank"><img src="${c.img}" alt="${c.t}" loading="lazy"></a>`
+    : `<img src="${c.img}" alt="${c.t}" loading="lazy">`;
+  grid.innerHTML += `<div class="card">${imgHtml}<div class="card-body"><div class="card-titulo">${c.t}</div><div class="card-detalhes">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}<span class="tag">🎨 ${c.cor}</span><span class="tag">📍 ${c.km}</span></div><div class="card-preco">${c.p} <small>· Financiamos</small></div><a class="btn-wpp" href="https://wa.me/${W}?text=${msg}" target="_blank">💬 Tenho interesse</a></div></div>`;
 });
 </script>
 </body>
