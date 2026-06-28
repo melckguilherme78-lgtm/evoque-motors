@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evoque Motors — Multimarcas em Serra/ES</title>
+<meta name="description" content="Evoque Motors — Carros seminovos e usados em Serra/ES. Financiamos, aceitamos troca. (27) 99231-8461">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; color: #222; }
+
+  /* HEADER */
+  header {
+    background: #111;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { color: #fff; font-size: 22px; font-weight: 800; letter-spacing: 1px; }
+  .logo span { color: #e8a020; }
+  .header-tel { color: #e8a020; font-weight: 700; font-size: 15px; text-decoration: none; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #111 60%, #1a1a1a);
+    color: #fff;
+    text-align: center;
+    padding: 60px 24px 48px;
+  }
+  .hero h1 { font-size: clamp(24px, 5vw, 42px); font-weight: 900; line-height: 1.2; }
+  .hero h1 span { color: #e8a020; }
+  .hero p { margin-top: 12px; font-size: 16px; color: #ccc; }
+  .hero-badges { display: flex; justify-content: center; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+  .badge { background: #e8a020; color: #111; font-weight: 700; font-size: 13px; padding: 6px 14px; border-radius: 20px; }
+
+  /* ESTOQUE */
+  .section-title { text-align: center; padding: 40px 16px 24px; font-size: 22px; font-weight: 800; }
+  .section-title span { color: #e8a020; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 0 20px 40px; max-width: 1200px; margin: 0 auto; }
+
+  /* CARD */
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.13); }
+  .card-img {
+    width: 100%; height: 200px; object-fit: cover; background: #222;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-img img { width: 100%; height: 200px; object-fit: cover; }
+  .card-img-placeholder { color: #555; font-size: 48px; }
+  .card-body { padding: 16px; }
+  .card-titulo { font-size: 16px; font-weight: 800; line-height: 1.3; }
+  .card-detalhes { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .tag { background: #f0f0f0; color: #555; font-size: 12px; padding: 3px 10px; border-radius: 12px; }
+  .card-preco { font-size: 22px; font-weight: 900; color: #e8a020; margin-top: 12px; }
+  .card-preco small { font-size: 13px; color: #888; font-weight: 400; }
+  .btn-wpp {
+    display: block; margin-top: 14px; background: #25D366; color: #fff;
+    text-align: center; padding: 12px; border-radius: 8px; font-weight: 700;
+    font-size: 15px; text-decoration: none; transition: background 0.2s;
+  }
+  .btn-wpp:hover { background: #1ebe5d; }
+
+  /* DIFERENCIAIS */
+  .diferenciais { background: #111; color: #fff; padding: 48px 24px; text-align: center; }
+  .diferenciais h2 { font-size: 22px; font-weight: 800; margin-bottom: 32px; }
+  .dif-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; max-width: 900px; margin: 0 auto; }
+  .dif-item { padding: 20px; background: #1e1e1e; border-radius: 10px; }
+  .dif-icon { font-size: 32px; margin-bottom: 10px; }
+  .dif-item h3 { font-size: 15px; font-weight: 700; color: #e8a020; }
+  .dif-item p { font-size: 13px; color: #aaa; margin-top: 4px; }
+
+  /* FOOTER */
+  footer { background: #0a0a0a; color: #888; text-align: center; padding: 32px 16px; font-size: 13px; }
+  footer a { color: #e8a020; text-decoration: none; }
+  footer p { margin-top: 6px; }
+
+  /* BOTAO FLUTUANTE */
+  .wpp-float {
+    position: fixed; bottom: 20px; right: 20px; z-index: 999;
+    background: #25D366; color: #fff; border-radius: 50px;
+    padding: 14px 20px; font-weight: 700; font-size: 15px;
+    text-decoration: none; box-shadow: 0 4px 16px rgba(37,211,102,0.5);
+    display: flex; align-items: center; gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">EVOQUE <span>MOTORS</span></div>
+  <a class="header-tel" href="tel:+5527992318461">📞 (27) 99231-8461</a>
+</header>
+
+<section class="hero">
+  <h1>Seu próximo carro está<br><span>aqui em Serra/ES</span></h1>
+  <p>Seminovos e usados selecionados · Financiamos · Aceitamos troca</p>
+  <div class="hero-badges">
+    <span class="badge">✅ Financiamento facilitado</span>
+    <span class="badge">✅ Aceitamos troca</span>
+    <span class="badge">✅ Revisados</span>
+  </div>
+</section>
+
+<h2 class="section-title">Estoque <span>disponível</span></h2>
+
+<div class="grid" id="estoque"></div>
+
+<section class="diferenciais">
+  <h2>Por que escolher a Evoque Motors?</h2>
+  <div class="dif-grid">
+    <div class="dif-item">
+      <div class="dif-icon">🤝</div>
+      <h3>Financiamento fácil</h3>
+      <p>Trabalhamos com os principais bancos do país</p>
+    </div>
+    <div class="dif-item">
+      <div class="dif-icon">🔄</div>
+      <h3>Aceitamos troca</h3>
+      <p>Seu carro como entrada no negócio</p>
+    </div>
+    <div class="dif-item">
+      <div class="dif-icon">🔧</div>
+      <h3>Revisados</h3>
+      <p>Todos os veículos passam por revisão antes da venda</p>
+    </div>
+    <div class="dif-item">
+      <div class="dif-icon">📍</div>
+      <h3>Serra/ES</h3>
+      <p>Av. Desembargador Mario da Silva Nunes, 568 — Jardim Limoeiro</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><strong style="color:#fff">Evoque Motors</strong></p>
+  <p>Av. Desembargador Mario da Silva Nunes, 568 — Jardim Limoeiro, Serra/ES</p>
+  <p>📞 <a href="tel:+5527992318461">(27) 99231-8461</a> &nbsp;|&nbsp; 📸 <a href="https://instagram.com/evoquecomercio" target="_blank">@evoquecomercio</a></p>
+  <p style="margin-top:16px; color:#555">Seg–Sex 8h às 18h &nbsp;|&nbsp; Sáb 8h às 15h</p>
+</footer>
+
+<a class="wpp-float" href="https://wa.me/5527992318461?text=Ol%C3%A1!%20Vi%20o%20site%20da%20Evoque%20Motors%20e%20quero%20saber%20mais%20sobre%20os%20carros." target="_blank">
+  💬 Falar no WhatsApp
+</a>
+
+<script>
+const WHATSAPP = "5527992318461";
+
+const carros = [
+  { titulo: "Mercedes-Benz Sprinter 415 Van Luxo 2014", km: "Consultar", cor: "Branca", preco: "R$ 135.900", tags: ["Diesel", "Van Executiva", "2014"] },
+  { titulo: "Toyota Hilux CD 4x4 2.5 Diesel 2006",      km: "292.000 km", cor: "Prata",  preco: "R$ 74.900",  tags: ["Diesel", "4x4", "Cabine Dupla"] },
+  { titulo: "Ford KA SE 1.0 Flex 2018",                  km: "44.000 km",  cor: "Preto",  preco: "R$ 39.900",  tags: ["Flex", "Sedan", "Baixo KM"] },
+  { titulo: "Fiat Strada Adventure 1.8 CE 2010",         km: "Consultar", cor: "Prata",  preco: "R$ 52.900",  tags: ["Flex", "Cabine Estendida", "2010"] },
+  { titulo: "VW Gol 1000 1994",                          km: "Consultar", cor: "Consultar", preco: "R$ 22.900",  tags: ["1.0", "Econômico", "Clássico"] },
+  { titulo: "Subaru Legacy GT 2.5 280cv Aut. 2011",      km: "Consultar", cor: "Prata",  preco: "R$ 85.900",  tags: ["AWD", "Turbo", "Automático"] },
+  { titulo: "Land Rover Defender 90 TDI SW 2007",        km: "Consultar", cor: "Consultar", preco: "R$ 349.000", tags: ["Diesel", "4x4", "Off-Road"] },
+  { titulo: "Land Rover Defender 90 2.4 Diesel 2007",    km: "Consultar", cor: "Consultar", preco: "R$ 349.000", tags: ["Diesel", "4x4", "Off-Road"] }
+];
+
+const icones = ["🚐","🛻","🚗","🚛","🚗","🚗","🚙","🚙"];
+
+const grid = document.getElementById('estoque');
+
+carros.forEach((c, i) => {
+  const msg = encodeURIComponent(`Olá! Vi o site da Evoque Motors e tenho interesse no ${c.titulo}. Poderia me passar mais informações?`);
+  grid.innerHTML += `
+    <div class="card">
+      <div class="card-img">
+        <span class="card-img-placeholder">${icones[i]}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-titulo">${c.titulo}</div>
+        <div class="card-detalhes">
+          ${c.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+          <span class="tag">🎨 ${c.cor}</span>
+          <span class="tag">📍 ${c.km}</span>
+        </div>
+        <div class="card-preco">${c.preco} <small>· Financiamos</small></div>
+        <a class="btn-wpp" href="https://wa.me/${WHATSAPP}?text=${msg}" target="_blank">
+          💬 Tenho interesse
+        </a>
+      </div>
+    </div>`;
+});
+</script>
+</body>
+</html>
