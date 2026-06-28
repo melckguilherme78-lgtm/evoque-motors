@@ -24,9 +24,16 @@
   .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; }
   .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.13); }
   .card-foto { width: 100%; height: 220px; object-fit: cover; display: block; }
-  .card-video { width: 100%; height: 340px; object-fit: contain; display: block; background: #000; }
-  .videos-duplo { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #000; }
-  .videos-duplo video { width: 100%; height: 220px; object-fit: contain; background: #000; display: block; }
+  /* Carrossel */
+  .carousel { position: relative; background: #000; }
+  .carousel img { width: 100%; height: 220px; object-fit: cover; display: none; }
+  .carousel img.active { display: block; }
+  .car-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.45); color: #fff; border: none; font-size: 18px; width: 32px; height: 48px; cursor: pointer; z-index: 10; border-radius: 4px; }
+  .car-btn.prev { left: 4px; }
+  .car-btn.next { right: 4px; }
+  .car-dots { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; }
+  .car-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
+  .car-dots span.active { background: #fff; }
   .card-body { padding: 16px; }
   .card-titulo { font-size: 16px; font-weight: 800; line-height: 1.3; }
   .card-detalhes { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
@@ -83,29 +90,50 @@
 <script>
 const W = "5527992318461";
 const carros = [
-  { t: "Mercedes-Benz Sprinter 415 Van Luxo 2014", km: "Consultar",   cor: "Branca", p: "R$ 135.900", tags: ["Diesel","Van Executiva","2014"],    img: "fotos/sprinter.jpg",  olx: "https://www.olx.com.br/vi/1495113219" },
+  { t: "Mercedes-Benz Sprinter 415 Van Luxo 2014", km: "Consultar",   cor: "Branca", p: "R$ 135.900", tags: ["Diesel","Van Executiva","2014"],    imgs: ["fotos/sprinter.jpg","fotos/sprinter_ext2.jpg","fotos/sprinter_int_teto.jpg","fotos/sprinter_int_bancos.jpg"], olx: "https://www.olx.com.br/vi/1495113219" },
   { t: "Toyota Hilux CD 4x4 2.5 Diesel 2006",      km: "292.000 km", cor: "Prata",  p: "R$ 74.900",  tags: ["Diesel","4x4","Cabine Dupla"],      img: "fotos/hilux.jpg",    olx: "https://www.olx.com.br/vi/1496291401" },
-  { t: "Ford KA SE 1.0 Flex 2018",                  km: "44.000 km",  cor: "Branco", p: "R$ 39.900",  tags: ["Flex","Sedan","Baixo KM"],          img: "fotos/ka.jpg",               olx: "https://www.olx.com.br/vi/1507419418" },
-  { t: "Fiat Strada Adventure 1.8 CE 2010",         km: "Consultar",  cor: "Cinza",  p: "R$ 52.900",  tags: ["Flex","Cabine Estendida","4x4"],    img: "fotos/strada.jpg",           olx: "https://www.olx.com.br/vi/1442636062" },
-  { t: "VW Gol 1000 1994",                          km: "Consultar",  cor: "Azul",   p: "R$ 22.900",  tags: ["1.0","Econômico","Clássico"],       img: "fotos/gol.jpg",              olx: "https://www.olx.com.br/vi/1429627037" },
-  { t: "VW Gol 1.8 AP 1991",                        km: "Consultar",  cor: "Cinza",  p: "R$ 28.000",  tags: ["1.8 AP","Clássico","Impecável"],    img: "fotos/gol1991.jpg",          olx: "" },
-  { t: "Subaru Legacy GT 2.5 280cv Aut. 2011",      km: "Consultar",  cor: "Preto",  p: "R$ 85.900",  tags: ["AWD","Turbo","Automático"],         img: "fotos/subaru.jpg",           olx: "https://www.olx.com.br/vi/1452937267" },
-  { t: "Land Rover Defender 90 2.4 Diesel 2007",    km: "Consultar",  cor: "Prata",  p: "R$ 349.000", tags: ["Diesel","4x4","Off-Road"],          img: "fotos/defender2.jpg",        olx: "https://www.olx.com.br/vi/1505288142" }
+  { t: "Ford KA SE 1.0 Flex 2018",                  km: "44.000 km",  cor: "Branco", p: "R$ 39.900",  tags: ["Flex","Sedan","Baixo KM"],          img: "fotos/ka.jpg",       olx: "https://www.olx.com.br/vi/1507419418" },
+  { t: "Fiat Strada Adventure 1.8 CE 2010",         km: "Consultar",  cor: "Cinza",  p: "R$ 52.900",  tags: ["Flex","Cabine Estendida","4x4"],    img: "fotos/strada.jpg",   olx: "https://www.olx.com.br/vi/1442636062" },
+  { t: "VW Gol 1000 1994",                          km: "Consultar",  cor: "Azul",   p: "R$ 22.900",  tags: ["1.0","Econômico","Clássico"],       img: "fotos/gol.jpg",      olx: "https://www.olx.com.br/vi/1429627037" },
+  { t: "VW Gol 1.8 AP 1991",                        km: "Consultar",  cor: "Cinza",  p: "R$ 28.000",  tags: ["1.8 AP","Clássico","Impecável"],    img: "fotos/gol1991.jpg",  olx: "" },
+  { t: "Subaru Legacy GT 2.5 280cv Aut. 2011",      km: "Consultar",  cor: "Preto",  p: "R$ 85.900",  tags: ["AWD","Turbo","Automático"],         img: "fotos/subaru.jpg",   olx: "https://www.olx.com.br/vi/1452937267" },
+  { t: "Land Rover Defender 90 2.4 Diesel 2007",    km: "Consultar",  cor: "Prata",  p: "R$ 349.000", tags: ["Diesel","4x4","Off-Road"],          img: "fotos/defender2.jpg",olx: "https://www.olx.com.br/vi/1505288142" }
 ];
+
+let carIdx = {};
+
+function carSlide(id, dir) {
+  const el = document.getElementById(id);
+  const imgs = el.querySelectorAll('img');
+  const dots = el.querySelectorAll('.car-dots span');
+  const total = imgs.length;
+  carIdx[id] = ((carIdx[id] || 0) + dir + total) % total;
+  imgs.forEach((img, i) => { img.classList.toggle('active', i === carIdx[id]); dots[i].classList.toggle('active', i === carIdx[id]); });
+}
+
+function carGo(id, idx) {
+  carIdx[id] = idx;
+  const el = document.getElementById(id);
+  el.querySelectorAll('img').forEach((img, i) => img.classList.toggle('active', i === idx));
+  el.querySelectorAll('.car-dots span').forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+
 const grid = document.getElementById('estoque');
 carros.forEach(c => {
   const msg = encodeURIComponent("Olá! Vi o site da Evoque Motors e tenho interesse no " + c.t + ". Poderia me passar mais informações?");
   let media;
-  if (c.video && c.video2) {
-    media = `<div class="videos-duplo"><video autoplay muted loop playsinline><source src="${c.video}" type="video/mp4"></video><video autoplay muted loop playsinline><source src="${c.video2}" type="video/mp4"></video></div>`;
-  } else if (c.video) {
-    media = `<video class="card-video" autoplay muted loop playsinline poster="${c.img}"><source src="${c.video}" type="video/mp4"></video>`;
+  if (c.imgs) {
+    const id = "c" + Math.random().toString(36).slice(2,8);
+    const imgTags = c.imgs.map((s,i) => '<img src="' + s + '" alt="' + c.t + '" class="' + (i===0?'active':'') + '" loading="lazy">').join('');
+    const dotTags = c.imgs.map((_,i) => '<span class="' + (i===0?'active':'') + '" onclick="carGo(\'' + id + '\',' + i + ')"></span>').join('');
+    media = '<div class="carousel" id="' + id + '">' + imgTags + '<button class="car-btn prev" onclick="carSlide(\'' + id + '\',-1)">&#10094;</button><button class="car-btn next" onclick="carSlide(\'' + id + '\',1)">&#10095;</button><div class="car-dots">' + dotTags + '</div></div>';
   } else if (c.olx) {
-    media = `<a href="${c.olx}" target="_blank"><img class="card-foto" src="${c.img}" alt="${c.t}" loading="lazy"></a>`;
+    media = '<a href="' + c.olx + '" target="_blank"><img class="card-foto" src="' + c.img + '" alt="' + c.t + '" loading="lazy"></a>';
   } else {
-    media = `<img class="card-foto" src="${c.img}" alt="${c.t}" loading="lazy">`;
+    media = '<img class="card-foto" src="' + c.img + '" alt="' + c.t + '" loading="lazy">';
   }
-  grid.innerHTML += `<div class="card">${media}<div class="card-body"><div class="card-titulo">${c.t}</div><div class="card-detalhes">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}<span class="tag">🎨 ${c.cor}</span><span class="tag">📍 ${c.km}</span></div><div class="card-preco">${c.p} <small>· Financiamos</small></div><a class="btn-wpp" href="https://wa.me/${W}?text=${msg}" target="_blank">💬 Tenho interesse</a></div></div>`;
+  const tags = c.tags.map(t => '<span class="tag">' + t + '</span>').join('');
+  grid.innerHTML += '<div class="card">' + media + '<div class="card-body"><div class="card-titulo">' + c.t + '</div><div class="card-detalhes">' + tags + '<span class="tag">🎨 ' + c.cor + '</span><span class="tag">📍 ' + c.km + '</span></div><div class="card-preco">' + c.p + ' <small>· Financiamos</small></div><a class="btn-wpp" href="https://wa.me/' + W + '?text=' + msg + '" target="_blank">💬 Tenho interesse</a></div></div>';
 });
 </script>
 </body>
