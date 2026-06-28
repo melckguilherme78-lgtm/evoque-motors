@@ -81,7 +81,7 @@
 <script>
 const W = "5527992318461";
 const carros = [
-  { t: "Mercedes-Benz Sprinter 415 Van Luxo 2014", km: "Consultar",   cor: "Branca", p: "R$ 135.900", tags: ["Diesel","Van Executiva","2014"],    video: "fotos/sprinter_video1.mp4", img: "fotos/sprinter.jpg",  olx: "https://www.olx.com.br/vi/1495113219" },
+  { t: "Mercedes-Benz Sprinter 415 Van Luxo 2014", km: "Consultar",   cor: "Branca", p: "R$ 135.900", tags: ["Diesel","Van Executiva","2014"],    videos: ["fotos/sprinter_video1.mp4","fotos/sprinter_video_interno.mp4"], img: "fotos/sprinter.jpg",  olx: "https://www.olx.com.br/vi/1495113219" },
   { t: "Toyota Hilux CD 4x4 2.5 Diesel 2006",      km: "292.000 km", cor: "Prata",  p: "R$ 74.900",  tags: ["Diesel","4x4","Cabine Dupla"],      video: "fotos/hilux_video.mp4",    img: "fotos/hilux.jpg",    olx: "https://www.olx.com.br/vi/1496291401" },
   { t: "Ford KA SE 1.0 Flex 2018",                  km: "44.000 km",  cor: "Branco", p: "R$ 39.900",  tags: ["Flex","Sedan","Baixo KM"],          img: "fotos/ka.jpg",               olx: "https://www.olx.com.br/vi/1507419418" },
   { t: "Fiat Strada Adventure 1.8 CE 2010",         km: "Consultar",  cor: "Cinza",  p: "R$ 52.900",  tags: ["Flex","Cabine Estendida","4x4"],    img: "fotos/strada.jpg",           olx: "https://www.olx.com.br/vi/1442636062" },
@@ -94,7 +94,12 @@ const grid = document.getElementById('estoque');
 carros.forEach(c => {
   const msg = encodeURIComponent("Olá! Vi o site da Evoque Motors e tenho interesse no " + c.t + ". Poderia me passar mais informações?");
   let media;
-  if (c.video) {
+  if (c.videos) {
+    const vids = c.videos.map(v=>`<source src="${v}" type="video/mp4">`).join("");
+    media = `<video class="card-media-video" id="vid_${Math.random().toString(36).slice(2)}" autoplay muted playsinline poster="${c.img}" onended="this.src=this.src">${vids}</video>`;
+    // alterna entre os videos ao terminar
+    media = `<video class="card-media-video" autoplay muted playsinline poster="${c.img}" data-videos="${c.videos.join("|")}" data-idx="0" onended="var v=this,vs=v.dataset.videos.split(\"|\"),i=(+v.dataset.idx+1)%vs.length;v.dataset.idx=i;v.src=vs[i];v.play()"><source src="${c.videos[0]}" type="video/mp4"></video>`;
+  } else if (c.video) {
     media = `<video class="card-media-video" autoplay muted loop playsinline poster="${c.img}"><source src="${c.video}" type="video/mp4"></video>`;
   } else if (c.olx) {
     media = `<a href="${c.olx}" target="_blank"><img class="card-media-foto" src="${c.img}" alt="${c.t}" loading="lazy"></a>`;
